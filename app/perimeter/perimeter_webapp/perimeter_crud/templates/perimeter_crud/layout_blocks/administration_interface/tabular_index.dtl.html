@@ -1,0 +1,8 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/app.dtl.html" %}
+{% block module_content %}
+    <div class="jumbotron create_jumbotron">
+		<a href="#" onclick="location.assign(location.href)"  class="back-link"><span class="fa fa-refresh"></span>&nbsp; Refresh</a>
+		{% block table_content %}
+		{% endblock %}
+	</div>
+{% endblock %}

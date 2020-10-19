@@ -1,0 +1,65 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+		<form action="/perimeter/contacts/create" method="POST">
+			<h3>General Details</h3>
+			<hr>
+			{% if titles %}
+			<div class="formgroup row">
+				<label for="title" class="col-sm-3 col-form-label">Title: </label>
+				<div class="col-sm-9">
+					<select name="title" class="custom-select">
+						{% for title in titles %}
+							<option>{{ title }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			{% endif %}
+			
+			<div class="form-group row">
+				<label for="alias" class="col-sm-3 col-form-label">Alias: </label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" name="alias" required placeholder="Berty">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="first_name" class="col-sm-3 col-form-label">First Name: </label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" name="first_name" required placeholder="Bertrand"/>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="last_name" class="col-sm-3 col-form-label">Last Name: </label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" name="last_name" required placeholder="Russell"/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="middle_name" class="col-sm-3 col-form-label">Middle Name: : </label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" name="middle_name" required placeholder="Rufus"/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-12">
+					<button type="submit" class="btn btn-outline-dark mr-1">
+						<i class="fa fa-plus"></i>
+						<span>&nbsp;Add Contact</span>
+					</button>
+				</div>
+			</div>
+			{% csrf_token %}
+			<input type="hidden" name="_method" value="POST"/>
+		</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}

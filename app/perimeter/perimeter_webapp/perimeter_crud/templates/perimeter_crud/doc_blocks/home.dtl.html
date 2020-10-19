@@ -1,0 +1,30 @@
+{% extends 'perimeter_crud/layout_blocks/app.dtl.html' %}
+
+{% block content %}
+
+{% if user_authorized == "True" %}
+<div class="full-height d-flex align-content-center justify-content-center align-items-center w-100 row">
+        <div class="col-12 flex-center position-ref ">
+            <div class="code">Hey there... </div>
+                
+            <div class="message" style="padding: 10px;">
+                <span class="fa fa-terminal"></span> Your account is pending authorization...
+            </div>
+                
+        </div>
+        <div class="explanation col-12 d-flex align-content-center justify-content-center align-items-center">
+            We know you're not anyone suspicious. Please contact your&nbsp;<a href="mailto:itsupport@ptcmw.com">system administrator.</a>
+        </div>
+        <div class="redirect my-3 col-12 d-flex align-content-center justify-content-center">
+            <button class="btn btn-outline-dark" onclick="history.back()"><span class="fa fa-help"></span> 
+                Learn about perimeter...
+            </button>
+        </div>
+    </div>
+{% else %}
+<script>
+    window.location.assign("/perimeter/nodes/");
+</script>
+{% endif %}  
+
+{% endblock %}

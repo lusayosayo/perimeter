@@ -1,0 +1,53 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+        {% if contact %}
+		<header class="text-center w-100">
+            <h2 class="d-inline-block">
+				<button
+					class="btn btn-link btn-crumb"
+					data-action="show"
+					data-module="contacts"
+					data-instance-id="{{ contact.id }}">{{ contact.first_name }} {{ contact.last_name }}</button>
+                <span>|</span>
+            </h2>
+            <h3 class="d-inline-block">View Phone Number</h3>
+        </header>
+		<hr>
+		<div>
+			<div class="form-group row">
+				<label for="phone_number" class="col-sm-3 col-form-label">Phone Number: </label>
+				<div class="col-sm-9">
+					<input type="phone_number" name="phone_number" class="form-control"
+						disabled placeholder="neetlord@focalpointio.com" value="{{ phone_number.phone_number }}"/>
+				</div>
+			</div>
+
+            <hr>
+
+			<div class="form-group row">
+				<div class="col-sm-12">
+                    <button
+                        type="button"
+                        class="btn btn-outline-dark mr-1"
+                        data-action="edit"
+                        data-module="contacts">
+						<i class="fa fa-unlock"></i>
+						<span>Edit Phone Number</span>
+					</button>
+				</div>
+			</div>
+		</divht">
+                <div class="code">
+                    <h3 class="h1">
+                        You can't edit a phone number for a contact that doesn't exist.
+                    </h3>
+                </div>
+                <br>
+                <div class="message" style="padding: 10px;">
+                    <span class="fa fa-terminal"></span>
+                    <a href="/perimeter/contacts/index">Return to contact list...</a>
+                </div>
+            </div>
+        {% endif %}
+{% endblock %}

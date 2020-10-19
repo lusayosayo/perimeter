@@ -1,0 +1,202 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+    {% if node %}
+		{% if node_interface and ip_address %}
+		<div class="form-group row">
+			<header>
+				<h2 class="d-inline-block">
+					<button
+						class="btn btn-link btn-crumb"
+						data-action="show"
+						data-module="nodes"
+						data-instance-id="{{ node.id }}">{{ node.name }}</button>
+					<span>|</span>
+				</h2>
+				<h3 class="d-inline-block">
+					<button
+						class="btn btn-link btn-crumb"
+						data-action="show_child"
+						data-parent-module="nodes"
+						data-parent-instance-id="{{ node.id }}"
+						data-child-module="node_interfaces"
+						data-child-instance-id="{{ node_interface.id }}">{{ node_interface.interface_name }}</button>
+				</h3>
+			</header>
+		</div>
+		<hr>
+		<form action="/perimeter/nodes/{{ node.id }}/node_interfaces/{{ node_interface.id }}/ip_addresses/{{ ip_address.id }}/edit" method="POST">
+			<h3>Edit IP Address</h3>
+            <div class="form-group row">
+				<label for="ip_address_type" class="col-sm-3 col-form-label">IP Address Type: </label>
+				<div class="col-sm-9">
+					<select class="custom-select" name="ip_address_type">
+                        {% for ip_address_type in ip_address_types %}
+						<option
+							{% if ip_address.ip_address_type == ip_address_type %}
+							selected
+							{% endif %}
+							value="{{ ip_address_type }}">{{ ip_address_type }}</option>
+                        {% endfor %}
+                    </select>
+				</div>
+			</div>
+			
+            <div class="form-group row">
+				<label for="ip_address" class="col-sm-3 col-form-label">IP Address: </label>
+				<div class="col-sm-9">
+					<input type="text" name="ip_address" class="form-control" placeholder="127.0.0.1" value="{{ ip_address.ip_address }}" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="ip_address" class="col-sm-3 col-form-label">Subnet Mask: </label>
+				<div class="col-sm-9">
+					<input type="text" name="subnet_mask" class="form-control" placeholder="255.255.255.0" value="{{ ip_address.subnet_mask }}"/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="ip_address" class="col-sm-3 col-form-label">Gateway: </label>
+				<div class="col-sm-9">
+					<input type="text" name="gateway" class="form-control" placeholder="192.168.0.1" value="{{ ip_address.gateway }}"/>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="form-group row">
+				<div class="col-sm-12">
+					<button type="submit" class="btn btn-outline-dark mr-1">
+						<i class="fa fa-save"></i>
+						<span>Save Changes</span>
+					</button>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="form-group row">
+				<header class="col-12">
+					<h3 class="perimeter-subsection-header">
+						<span>Services</span>
+						<span class="help">
+							<button type="button"
+								class="btn btn-link"
+								data-toggle='popover' title='What is this?'
+								data-container='body'
+								data-content="You can register services to this IP address here. Note that setting a service for the ip address 0.0.0.0 makes it available through all ip addresses bound to the interface.">
+								<i class="fa fa-question-circle"></i>
+							</button>
+						</span>
+					</h3>
+				</header>
+				<hr>
+				<div class="col-12 form-row mx-0">
+					{% if services %}
+					<table id="node_interfaces" class="table table-dark table-striped">
+						<thead>
+							<th scope="col">Display Name</th>
+							<th scope="col">Port</th>
+							<th scope="col">Protocol</th>
+							<th scope="col">Process</th>
+							<th scope="col">Handler</th>
+							<th scope="col" class="d-flex">
+								<button type="button"
+									class="btn btn-outline-dark bg-white ml-auto"
+									data-action="add_mapping"
+									data-parent-module="nodes/{{ node.id }}/node_interfaces/{{ node_interface.id}}/ip_addresses"
+									data-child-module="services"
+									data-parent-instance-id="{{ ip_address.id }}">
+									<i class="fa fa-plus-circle"></i>
+									<span>Add Service Binding</span>
+								</button>
+							</th>
+						</thead>
+						{% for service in services %}
+						<tr class="service">
+							<td class="display_name">
+								{{ service.display_name }}
+							</td>
+							<td class="port">
+								{{ service.mapped_port }}
+							</td>
+							<td class="protocol">
+								{{ service.protocol }}
+							</td>
+							<td class="process">
+								{{ service.process }}
+							</td>
+							<td class="handler">
+								{{ service.handler.name }}
+							</td>
+							<td class="unmap">
+								<button type="button"
+									id="btn_service_binding"
+									data-action="unmap"
+									data-parent-module="nodes/{{ node.id }}/node_interfaces/{{ node_interface.id }}/ip_addresses"
+									data-parent-instance-id="{{ ip_address.id }}"
+									data-child-module="services"
+									data-child-instance-id="{{ service.id }}"
+									data-map-keyword="Bind Service"
+									data-unmap-keyword="Unbind Service"
+									class="btn btn-link text-white">
+									<i class="fa fa-trash"></i>
+									<span class="mapping_state">Unbind Service</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+					{% else %}
+					<div class="flex-center position-ref h-100 w-100">
+						<div class="code">
+							<h4 class="h1">No Service Mappings Found<h4>
+						</div>
+						<br>
+						<div class="message" style="padding: 10px;">
+							<span class="fa fa-terminal"></span>
+							<button type="button"
+								class="btn btn-outline-dark"
+								data-action="add_mapping"
+								data-parent-module="nodes/{{ node.id }}/node_interfaces/{{ node_interface.id}}/ip_addresses"
+								data-child-module="services"
+								data-parent-instance-id="{{ ip_address.id }}">
+								<i class="fa fa-plus-circle"></i>
+								<span>Add Service Binding</span>
+							</button>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</form>
+		{% else %}
+		<div class="flex-center position-ref full-height">
+			<div class="code">
+				<h3 class="h1">
+					You can't edit an ip address binding that doesn't exist.
+				</h3>
+			</div>
+			<br>
+			<div class="message" style="padding: 10px;">
+				<span class="fa fa-terminal"></span>
+				<a href="/perimeter/nodes/{{ node.id }}/show">Return to node interface list...</a>
+			</div>
+		</div>
+		{% endif %}
+    {% else %}
+		<div class="flex-center position-ref full-height">
+			<div class="code">
+				<h3 class="h1">
+					You can't edit an ip address for a node that doesn't exist.
+				</h3>
+			</div>
+			<br>
+			<div class="message" style="padding: 10px;">
+				<span class="fa fa-terminal"></span>
+				<a href="/perimeter/nodes/index">Return to node list...</a>
+			</div>
+		</div>
+    {% endif %}
+{% endblock %}

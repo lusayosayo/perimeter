@@ -1,0 +1,41 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+		<form action="/perimeter/network_providers/create" method="POST">
+			<h3>General Details</h3>
+			<div class="form-group row">
+				<label for="network_provider_name" class="col-sm-3 col-form-label">Company Name: </label>
+				<div class="col-sm-9">
+					<input type="text" name="network_provider_name" class="form-control" required placeholder="TNM"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="network_provider_street_address" class="col-sm-3 col-form-label">Street Address: </label>
+				<div class="col-sm-9">
+					<input type="text" name="network_provider_street_address" class="form-control" required placeholder="Ali Hassan Road, Lot 18, Ginnery Corner, Chichiri, Blantyre, Malawi"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="network_provider_description" class="col-sm-3 col-form-label">Description: </label>
+				<div class="col-sm-9">
+					<textarea name="network_provider_description" class="form-control" required placeholder="Telecommunications Network Malawi"></textarea>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-12">
+					<button type="submit" class="btn btn-outline-dark mr-1">
+						<i class="fa fa-plus"></i>
+						<span>Add Network Provider</span>
+					</button>
+				</div>
+			</div>
+			{% csrf_token %}
+			<input type="hidden" name="_method" value="POST"/>
+		</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}

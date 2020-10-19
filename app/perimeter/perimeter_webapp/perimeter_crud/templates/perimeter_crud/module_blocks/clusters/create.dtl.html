@@ -1,0 +1,30 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+		<form action="/perimeter/clusters/create" method="POST">
+			<h3>Create Cluster</h3>
+			<div class="form-group row">
+				<label for="clusterName" class="col-sm-3 col-form-label">Cluster Name: </label>
+				<div class="col-sm-9">
+					<input type="text" name="cluster_name" class="form-control" required placeholder="Head Office"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="clusterDescription" class="col-sm-3 col-form-label">Cluster Description: </label>
+				<div class="col-sm-9">
+					<textarea class="form-control" name="cluster_description" placeholder="All servers at the head office..."></textarea>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-12">
+					<button type="submit" class="btn btn-outline-dark mr-1">
+						<i class="fa fa-plus"></i>
+						<span>Create Cluster</span>
+					</button>
+				</div>
+			</div>
+			{% csrf_token %}
+			<input type="hidden" name="_method" value="POST"/>
+		</form>
+{% endblock %}

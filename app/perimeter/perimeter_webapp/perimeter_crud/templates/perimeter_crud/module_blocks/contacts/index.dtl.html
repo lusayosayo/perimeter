@@ -1,0 +1,82 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/tabular_index.dtl.html" %}
+
+{% block table_content %}
+	{% if contacts %}
+	<div>
+		<h3>Contacts</h3>
+		<table class="table table-dark table-striped">
+			<thead class="thead-dark">
+				<th scope="col">ID</th>
+				<th scope="col">Alias</th>
+				<th scope="col">Title</th>
+				<th scope="col">First Name</th>
+				<th scope="col">Last Name</th>
+				<th scope="col"></th>
+				<th scope="col" class="d-flex">
+					<button
+						type="button"
+						class="btn btn-outline-dark bg-white ml-auto"
+						data-action="create"
+						data-module="contacts">
+						<i class="fa fa-plus"></i>
+						<span>Add Contact</span>
+					</button>
+				</th>
+			</thead>
+			<tbody>
+			{% for contact in contacts %}
+				<tr>
+					<th scope="row">{{ contact.id }}</th>
+					<td>{{ contact.alias }}</td>
+					<td>{{ contact.title }}</td>
+					<td>{{ contact.first_name }}</td>
+					<td>{{ contact.last_name }}</td>
+					<td>
+						<button
+							type="button"
+							class="btn btn-link text-white"
+							data-action="show"
+							data-module="contacts"
+							data-instance-id="{{ contact.id }}">
+							<i class="fa fa-external-link"></i>
+							<span>Details</span>
+						</button>
+					</td>
+					<td>
+						<button
+							type="button"
+							class="btn btn-link text-white"
+							data-action="delete"
+							data-module="contacts"
+							data-instance-id="{{ contact.id }}">
+							<i class="fa fa-trash"></i>
+							<span>Delete</span>
+						</button>
+					</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	
+	</div>
+	{% else %}
+		<div class="flex-center position-ref full-height">
+            <div class="code">
+                <h1>
+                	No Contacts Found
+                </h1>
+            </div>
+            <br>
+            <div class="message" style="padding: 10px;">
+            	<span class="fa fa-terminal"></span>
+                <a href="/perimeter/contacts/create">Add a new contact</a> to get started.
+            </div>
+        </div>
+	{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}

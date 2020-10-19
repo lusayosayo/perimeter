@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<services>
+	<service
+		port="80"
+		name="APACHED HTTP"
+		display_name="Apache HTTP Server"
+		protocol="HTTP"
+		process="apached"
+		process_description="The apached http server."
+		handler="http_handler">
+	</service>
+	<service
+		port="3128"
+		name="SQUID HTTP PROXY"
+		display_name="Squid Proxy"
+		protocol="http-proxy"
+		process="squid"
+		process_description="A squid http proxy."
+		handler="service_check_handler">
+	</service>
+	<service
+		port="8080"
+		name="VBS BACKOFFICE"
+		display_name="VBS Backoffice"
+		protocol="HTTP"
+		process="tomcat"
+		process_description="The tomcat http server."
+		handler="http_handler">
+	</service>
+	<service
+		port="21"
+		name="SSH"
+		display_name="Open SSH"
+		protocol="HTTP"
+		process="sshd"
+		process_description="Open SSH server."
+		handler="ssh_handler">
+	</service>
+	<service
+		port="335"
+		name="NETBIOS"
+		display_name="Net BIOS"
+		protocol="NetBIOS"
+		process="netbios"
+		process_description="Microsoft NETBIOS."
+		handler="netbios_handler">
+	</service>
+	<service
+		port="51000"
+		name="DB2 DATABASE"
+		display_name="DB2 Database"
+		protocol="SSL"
+		process="db2"
+		process_description="IBM DB2 Database for VBS Backoffice."
+		handler="db_handler">
+	</service>
+	<service
+		port="0"
+		name="ICMP ECHO"
+		display_name="ICMP Ping"
+		protocol="ICMP"
+		process="ping"
+		process_description="A simple service wrapper to conduct a ping."
+		handler="icmp_handler">
+	</service>
+</services>

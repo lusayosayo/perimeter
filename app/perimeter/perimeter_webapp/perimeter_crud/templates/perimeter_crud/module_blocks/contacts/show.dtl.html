@@ -1,0 +1,277 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+		<div action="/perimeter/network_providers/create" method="POST">
+			<h3>General Details</h3>
+			<hr>
+			{% if titles %}
+			<div class="formgroup row">
+				<label for="title" class="col-sm-3 col-form-label">Title: </label>
+				<div class="col-sm-9">
+					<select name="title" class="custom-select">
+						{% for title in titles %}
+							<option>{{ title }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			{% endif %}
+			
+			<div class="form-group row">
+				<label for="alias" class="col-sm-3 col-form-label">Alias: </label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" name="alias" disabled placeholder="Berty" value="{{ contact.alias }}">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="first_name" class="col-sm-3 col-form-label">First Name: </label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" name="first_name" disabled placeholder="Bertrand" value="{{ contact.first_name }}"/>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="last_name" class="col-sm-3 col-form-label">Last Name: </label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" name="last_name" disabled placeholder="Russell" value="{{ contact.last_name }}"/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="middle_name" class="col-sm-3 col-form-label">Middle Name: </label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" name="middle_name" disabled placeholder="Rufus" value="{{ contact.middle_name }}"/>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="form-group row">
+				<div class="col-12">
+					<button type="button"
+						data-action="edit"
+						data-module="contacts"
+						data-instance-id="{{ contact.id }}"
+						class="btn btn-outline-dark mr-1">
+						<i class="fa fa-unlock"></i>
+						<span>Edit Contact</span>
+					</button>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="form-group row">
+				<ul class="nav nav-tabs col-12">
+					<li class="nav-item">
+						<a class="nav-link active" data-toggle="tab" href="#phone_numbers">
+							<i classs="fa fa-phone"></i>
+							<span>Phone Numbers</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#emails">
+							<i class="fa fa-mail"></i>
+							<span>Emails</span>
+						</a>
+					</li>
+				</ul>
+
+				<div class="tab-content col-12" id="details">
+					<div class="tab-pane fade show active" id="phone_numbers">
+						<div class="form-group row">
+							<header class="col-12">
+								<h3 class="perimeter-subsection-header">
+									<span>Phone Numbers</span>
+									<span class="help">
+										<button type="button"
+											class="btn btn-link"
+											data-toggle='popover' title='What is this?'
+											data-container='body'
+											data-content="Set your contact's phone numbers here.">
+											<i class="fa fa-question-circle"></i>
+										</button>
+									</span>
+								</h3>
+							</header>
+							<hr>
+							<div class="col-12 form-row mx-0">
+								{% if phone_numbers %}
+								<table id="phone_numbers" class="table table-dark table-striped">
+									<thead>
+										<th scope="col">Phone Number</th>
+										<th scope="col"></th>
+										<th scope="col" class="d-flex">
+											<button
+												data-action="add_child"
+												data-parent-module="contacts"
+												data-child-module="phone_numbers"
+												data-parent-instance-id="{{ contact.id }}"
+												type="button"
+												class="btn btn-outline-dark bg-white ml-auto">
+												<i class="fa fa-plus-circle"></i>
+												<span>Add Phone Number</span>
+											</button>
+										</th>
+									</thead>
+									{% for phone_number in phone_numbers %}
+									<tr class="phone_number">
+										<td class="phone_number">
+											{{ phone_number.phone_number }}
+										</td>
+										<td class="edit_phone_number">
+											<button type="button"
+												data-action="edit_child"
+												data-parent-module="contacts"
+												data-child-module="phone_numbers"
+												data-parent-instance-id="{{ contact.id }}"
+												data-child-instance-id="{{ phone_number.id }}"
+												class="btn btn-link text-white">
+												<i class="fa fa-external-link"></i>
+												<span>Edit Phone Number</span>
+											</button>
+										</td>
+										<td class="delete_phone_number">
+											<button type="button"
+												data-action="remove_child"
+												data-parent-module="contacts"
+												data-child-module="phone_numbers"
+												data-parent-instance-id="{{ contact.id }}"
+												data-child-instance-id="{{ phone_number.id }}"
+												class="btn btn-link text-white">
+												<i class="fa fa-trash"></i>
+												<span>Delete</span>
+											</button>
+										</td>
+									</tr>
+									{% endfor %}
+								</table>
+								{% else %}
+								<div class="flex-center position-ref h-100 w-100">
+									<div class="code">
+										<h4 class="h1">No Phone Numbers Found<h4>
+									</div>
+									<br>
+									<div class="message" style="padding: 10px;">
+										<span class="fa fa-terminal"></span>
+										<button
+											data-action="add_child"
+											data-parent-module="contacts"
+											data-child-module="phone_numbers"
+											data-parent-instance-id="{{ contact.id }}"
+											type="button"
+											class="btn btn-link">
+											<i class="fa fa-plus-circle"></i>
+											<span>Add a new phone number</span>
+										</button>
+									</div>
+								</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="emails">
+						<div class="form-group row">
+							<header class="col-12">
+								<h3 class="perimeter-subsection-header">
+									<span>Emails</span>
+									<span class="help">
+										<button type="button"
+											class="btn btn-link"
+											data-toggle='popover' title='What is this?'
+											data-container='body'
+											data-content="Set your contact's emails here.">
+											<i class="fa fa-question-circle"></i>
+										</button>
+									</span>
+								</h3>
+							</header>
+							<hr>
+							<div class="col-12 form-row mx-0">
+								{% if emails %}
+								<table id="emails" class="table table-dark table-striped">
+									<thead>
+										<th scope="col">Email address</th>
+										<th scope="col"></th>
+										<th scope="col" class="d-flex">
+											<button
+												data-action="add_child"
+												data-parent-module="contacts"
+												data-child-module="emails"
+												data-parent-instance-id="{{ contact.id }}"
+												type="button"
+												class="btn btn-outline-dark bg-white ml-auto">
+												<i class="fa fa-plus-circle"></i>
+												<span>Add Email</span>
+											</button>
+										</th>
+									</thead>
+									{% for email in emails %}
+									<tr class="email">
+										<td class="email">
+											{{ email.email_address }}
+										</td>
+										<td class="edit_email">
+											<button type="button"
+												data-action="edit_child"
+												data-parent-module="contacts"
+												data-child-module="emails"
+												data-parent-instance-id="{{ contact.id }}"
+												data-child-instance-id="{{ email.id }}"
+												class="btn btn-link text-white">
+												<i class="fa fa-external-link"></i>
+												<span>Edit Email Address</span>
+											</button>
+										</td>
+										<td class="delete_email">
+											<button type="button"
+												data-action="remove_child"
+												data-parent-module="contacts"
+												data-child-module="emails"
+												data-parent-instance-id="{{ contact.id }}"
+												data-child-instance-id="{{ email.id }}"	
+												class="btn btn-link text-white">
+												<i class="fa fa-trash"></i>
+												<span>Delete</span>
+											</button>
+										</td>
+									</tr>
+									{% endfor %}
+								</table>
+								{% else %}
+								<div class="flex-center position-ref h-100 w-100">
+									<div class="code">
+										<h4 class="h1">No Emails Found<h4>
+									</div>
+									<br>
+									<div class="message" style="padding: 10px;">
+										<span class="fa fa-terminal"></span>
+										<button
+											data-action="add_child"
+											data-parent-module="contacts"
+											data-child-module="emails"
+											data-parent-instance-id="{{ contact.id }}"
+											data-child-instance-id="{{ email.id }}"
+											type="button"
+											class="btn btn-link">
+											<i class="fa fa-plus-circle"></i>
+											<span>Add a new email</span>
+										</button>
+									</div>
+								</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}

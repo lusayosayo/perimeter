@@ -1,0 +1,49 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+		<form action="/perimeter/nodes/create" method="POST">
+			<h3>Add Device</h3>
+
+			<hr>
+
+			<div class="form-group row">
+				<label for="node_name" class="col-sm-3 col-form-label">Device Name: </label>
+				<div class="col-sm-9">
+					<input type="text" name="node_name" class="form-control" required placeholder="Victoria Avenue VBS Device"/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="node_description" class="col-sm-3 col-form-label">Device Description: </label>
+				<div class="col-sm-9">
+					<textarea name="node_description" class="form-control" required placeholder="Device description..."></textarea>
+				</div>
+			</div>
+
+			{% if clusters %}
+			<div class="form-group row">
+				<label for="nodeCluster" class="col-sm-3 col-form-label">Cluster: </label>
+				<div class="col-sm-9">
+					<select name="node_cluster_id" class="custom-select custom-control">
+						{% for cluster in clusters %}
+							<option value="{{ cluster.id }}">{{ cluster.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			{% endif %}
+			
+			<div class="form-group row">
+				<div class="col-sm-3">
+				</div>
+				<div class="col-sm-9">
+					<button type="submit" class="btn btn-outline-dark mr-1">
+						<i class="fa fa-plus"></i>
+						<span>Create Device</span>
+					</button>
+				</div>
+			</div>
+			{% csrf_token %}
+			<input type="hidden" name="_method" value="POST"/>
+		</form>
+{% endblock %}

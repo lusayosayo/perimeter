@@ -1,0 +1,208 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+		{% if network_provider %}
+            <header>
+                <h3 class="d-inline">
+                    <span>{{ network_provider.name }}</span>
+                    <span>|</span>
+                </h3>
+                <h4 class="d-inline">Add Mapping</h4>
+            </header>
+            
+			<hr>
+
+			<div class="form-group row">
+				<header class="col-12">
+					<h3 class="perimeter-subsection-header">
+						<span>Contacts</span>
+						<span class="help">
+							<button type="button"
+								class="btn btn-link"
+								data-toggle='popover' title='What is this?'
+								data-container='body'
+								data-content="Choose to add contacts to this network provider.">
+								<i class="fa fa-question-circle"></i>
+							</button>
+						</span>
+					</h3>
+				</header>
+				<hr>
+				<div class="col-12 form-row mx-0">
+					{% if contacts %}
+					<table id="contacts" class="table table-dark table-striped">
+						<thead>
+							<th scope="col">First Name</th>
+							<th scope="col">Last Name</th>
+							<th scope="col"></th>
+							<th scope="col"></th>
+						</thead>
+						{% for contact in contacts %}
+						<tr class="contact">
+							<td class="first_name">
+								{{ contact.first_name }}
+							</td>
+							<td class="last_name">
+								{{ contact.last_name }}
+							</td>
+							<td class="interface_details">
+								<button type="button"
+									data-action="show"
+									data-module="contacts"
+									data-instance-id="{{ contact.id }}"
+									class="btn btn-link text-white">
+									<i class="fa fa-external-link"></i>
+									<span>Details</span>
+								</button>
+							</td>
+							<td>
+								<button
+									id="btn_map_contact_{{ contact.id }}"
+									type="button"
+                                    {% if contact in mapped_contacts %}
+									data-action="unmap"
+                                    {% else %}
+                                    data-action="map"
+                                    {% endif %}
+									data-parent-module="network_providers"
+									data-child-module="contacts"
+									data-parent-instance-id="{{ network_provider.id }}"
+									data-child-instance-id="{{ contact.id }}"
+									data-map-keyword="Bind Contact"
+									data-unmap-keyword="Unbind Contact"
+									data-show-client-message="noshow"
+									class="btn btn-link text-white">
+									<i class="fa fa-object-group"></i>
+									<span class="mapping_state">Mapping State</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+					{% else %}
+					<div class="flex-center position-ref h-100 w-100">
+						<div class="code">
+							<h4 class="h1">No contacts to map.<h4>
+						</div>
+						<br>
+						<div class="message" style="padding: 10px;">
+							<span class="fa fa-terminal"></span>
+							<button type="button"
+								class="btn btn-link"
+								data-action="create"
+								data-module="contacts">
+								<i class="fa fa-plus-circle"></i>
+								<span>Add a new contact</span>
+							</button>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<header class="col-12">
+					<h3 class="perimeter-subsection-header">
+						<span>Contacts for this network provider</span>
+						<span class="help">
+							<button type="button"
+								class="btn btn-link"
+								data-toggle='popover' title='What is this?'
+								data-container='body'
+								data-content="Choose to add devices to this network_provider.">
+								<i class="fa fa-question-circle"></i>
+							</button>
+						</span>
+					</h3>
+				</header>
+
+				<hr>
+				
+				<div class="col-12 form-row mx-0">
+					{% if mapped_contacts %}
+					<table id="mapped_contacts" class="table table-dark table-striped">
+						<thead>
+							<th scope="col">First Name</th>
+							<th scope="col">Last Name</th>
+							<th scope="col"></th>
+							<th scope="col"></th>
+						</thead>
+						{% for contact in mapped_contacts %}
+						<tr class="contact">
+							<td class="first_name">
+								{{ contact.first_name }}
+							</td>
+							<td class="last_name">
+								{{ contact.last_name }}
+							</td>
+							<td class="contact_details">
+								<button type="button"
+									data-action="show"
+									data-module="contacts"
+									data-instance-id="{{ contact.id }}"
+									class="interface-details-btn btn btn-link text-white">
+									<i class="fa fa-external-link"></i>
+									<span>Details</span>
+								</button>
+							</td>
+							<td>
+								<button
+									id="btn_mapped_contacts_{{ contact.id }}"
+									type="button"
+                                    {% if contact in mapped_contacts %}
+									data-action="unmap"
+                                    {% else %}
+                                    data-action="map"
+                                    {% endif %}
+									data-parent-module="network_providers"
+									data-child-module="contacts"
+									data-parent-instance-id="{{ network_provider.id }}"
+									data-child-instance-id="{{ contact.id }}"
+									data-map-keyword="Bind Contact"
+									data-unmap-keyword="Unbind Contact"
+									data-show-client-message="noshow"
+									class="btn btn-link text-white">
+									<i class="fa fa-object-group"></i>
+									<span class="mapping_state">Mapping State</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+					{% else %}
+					<div class="flex-center position-ref h-100 w-100">
+						<div class="code">
+							<h4 class="h1">No contacts found in this network_provider.<h4>
+						</div>
+						<br>
+						<div class="message" style="padding: 10px;">
+							<span class="fa fa-terminal"></span>
+							<button type="button"
+								class="btn btn-link"
+								data-action="add_mapping"
+								data-parent-module="network_providers"
+								data-parent-instance-id="{{ network_provider.id }}"
+								data-child-module="contacts">
+								<i class="fa fa-plus-circle"></i>
+								<span>Add a new contact</span>
+							</button>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+        {% else %}
+		<div class="flex-center position-ref full-height">
+            <div class="code">
+                <h1>
+                	The network provider you requested does not exist.
+                </h1>
+            </div>
+            <br>
+            <div class="message" style="padding: 10px;">
+            	<span class="fa fa-terminal"></span>
+                <a href="/perimeter/network_providers/index">Return to network provider list...</a>
+            </div>
+        </div>
+		{% endif %}
+{% endblock %}

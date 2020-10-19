@@ -1,0 +1,184 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+        {% if node and node_interface %}
+		<div class="form-group row">
+			<h2 class="text-center w-100">
+				<button
+					class="btn btn-link btn-crumb"
+					data-action="show"
+					data-module="nodes"
+					data-instance-id="{{ node.id }}">{{ node.name }}</button>
+			</h2>
+		</div>
+		<hr>
+		<form action="/perimeter/nodes/{{ node.id }}/node_interfaces/{{ node_interface.id }}/edit" method="POST">
+			<h3>Edit Interface</h3>
+            <div class="form-group row">
+				<label for="interface_type" class="col-sm-3 col-form-label">Interface Type: </label>
+				<div class="col-sm-9">
+					<select class="custom-select" name="interface_type">
+                    {% for interface_type in interface_types %}
+						{% if interface_type == node_interface.interface_type %}
+                        <option value="{{ interface_type }}" selected>{{ interface_type }}</option>
+						{% else %}
+						<option value="{{ interface_type }}">{{ interface_type }}</option>
+						{% endif %}
+                    {% endfor %}      
+                    </select>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="interface_name" class="col-sm-3 col-form-label">Interface Name: </label>
+				<div class="col-sm-9">
+					<input type="text" name="interface_name" class="form-control"
+						required value="{{ node_interface.interface_name }}" placeholder="{{ node_interface.interface_name }}"/>
+				</div>
+			</div>
+
+            <div class="form-group row">
+				<label for="mac_address" class="col-sm-3 col-form-label">Mac Address: </label>
+				<div class="col-sm-9">
+					<input type="text" name="mac_address" class="form-control"
+						value="{{ node_interface.mac_address }}" placeholder="{{ node_interface.mac_address }}"/>
+				</div>
+			</div>
+
+			<hr>
+			
+			<div class="form-group row">
+				<div class="col-sm-12">
+					<button type="submit" class="btn btn-outline-dark mr-1">
+						<i class="fa fa-save"></i>
+						<span>Save Changes</span>
+					</button>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="form-group row">
+				<header class="col-12">
+					<h3 class="perimeter-subsection-header">
+						<span>IP Addresses</span>
+						<span class="help">
+							<button
+								type="button"
+								class="btn btn-link"
+								data-toggle='popover' title='What is this?'
+								data-container='body'
+								data-content="Add your device's ethernet or wifi cards here. By default, perimeter assumes an ethernet card is available on your device, but you can remove it, or change its type by clicking on the interface details.">
+								<i class="fa fa-question-circle"></i>
+							</button>
+						</span>
+					</h3>
+				</header>
+				<hr>
+				<div class="col-12 form-row mx-0">
+					{% if node_interface_ip_addresses %}
+					<table id="node_interfaces" class="table table-dark table-striped">
+						<thead>
+							<th scope="col">Address Type</th>
+							<th scope="col">IP Address</th>
+							<th scope="col">Subnet Mask</th>
+							<th scope="col">Gateway</th>
+							<th scope="col"></th>
+							<th scope="col" class="d-flex">
+								<button
+									type="button"
+									id="btn_add_service_binding"
+									class="btn btn-outline-dark bg-white ml-auto"
+									data-action="add_child"
+									data-parent-module="nodes/{{ node.id }}/node_interfaces"
+									data-parent-instance-id="{{ node.id }}"
+									data-child-module="ip_addresses">
+									<i class="fa fa-plus-circle"></i>
+									<span>Add IP Address</span>
+								</button>
+							</th>
+						</thead>
+						{% for ip_address in node_interface_ip_addresses %}
+						<tr class="ip_address">
+							<td class="ip_address_type">
+								{{ ip_address.ip_address_type }}
+							</td>
+							<td class="interface_address">
+								{{ ip_address.ip_address }}
+							</td>
+							<td class="subnet_mask">
+								{{ ip_address.subnet_mask }}
+							</td>
+							<td class="gateway">
+								{{ ip_address.gateway }}
+							</td>
+							<td class="interface_details">
+								<button
+									type="button"
+									data-action="show_child"
+									data-parent-module="nodes/{{ node.id }}/node_interfaces"
+									data-parent-instance-id="{{ node_interface.id }}"
+									data-child-module="ip_addresses"
+									data-child-instance-id="{{ ip_address.id }}"
+									class="btn btn-link text-white">
+									<i class="fa fa-external-link"></i>
+									<span>Details</span>
+								</button>
+							</td>
+							<td>
+								<button type="button"
+									data-action="remove_child"
+									data-parent-module="nodes/{{ node.id }}/node_interfaces"
+									data-parent-instance-id="{{ node_interface.id }}"
+									data-child-module="ip_addresses"
+									data-child-instance-id="{{ ip_address.id }}"
+									class="btn btn-link text-white">
+									<i class="fa fa-trash"></i>
+									<span>Delete</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+					{% else %}
+					<div class="flex-center position-ref h-100 w-100">
+						<div class="code">
+							<h4 class="h1">No IP Addresses Found<h4>
+						</div>
+						<br>
+						<div class="message" style="padding: 10px;">
+							<span class="fa fa-terminal"></span>
+							<button
+								type="button"
+								data-action="add_child"
+								data-parent-module="nodes/{{ node.id }}/node_interfaces"
+								data-parent-instance-id="{{ node_interface.id }}"
+								data-child-module="ip_addresses"
+								class="btn btn-link">
+								<i class="fa fa-plus-circle"></i>
+								<span>Add a new IP Address</span>
+							</button>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+			
+			{% csrf_token %}
+			<input type="hidden" name="_method" value="POST"/>
+		</form>
+        {% else %}
+		<div class="flex-center position-ref full-height">
+			<div class="code">
+				<h3 class="h1">
+					You can't edit an interface that doesn't exist.
+				</h3>
+			</div>
+			<br>
+			<div class="message" style="padding: 10px;">
+				<span class="fa fa-terminal"></span>
+				<a href="/perimeter/nodes/index">Return to node list...</a>
+			</div>
+		</div>
+        {% endif %}
+{% endblock %}

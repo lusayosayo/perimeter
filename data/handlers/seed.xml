@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<handlers>
+	<handler
+		name="service_check_handler"
+		description="A simple ping that checks."
+		app_name="service_check_handler">
+	</handler>
+	<handler
+		name="ssh_handler"
+		description="A web-based interface to an SSH terminal session."
+		app_name="ssh_handler">
+	</handler>
+	<handler
+		name="ftp_handler"
+		description="A web-based FTP file browser."
+		app_name="ftp_handler">
+	</handler>
+	<handler
+		name="http_handler"
+		description="This basically boils down to opening a new tab."
+		app_name="http_handler">
+	</handler>
+	<handler
+		name="netbios_handler"
+		description="This is basically a handler for NET BIOS."
+		app_name="netbios_handler">
+	</handler>
+	<handler
+		name="db_handler"
+		description="This is basically a handler for databases."
+		app_name="db_handler">
+	</handler>
+	<handler
+		name="icmp_handler"
+		description="This is a wrapper that provides ICMP as a service."
+		app_name="icmp_handler">
+	</handler>
+</handlers>

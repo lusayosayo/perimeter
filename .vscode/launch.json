@@ -1,0 +1,39 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Django",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/app/manage.py",
+            "args": [
+                "runserver",
+                "--noreload",
+                "localhost:8001"
+            ],
+            "django": true
+        },
+        {
+            "name": "Python: Load Data Test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/app/load_data.py",
+            "django": true
+        },
+        {
+            "name": "Perimeter: CRUD Tests",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/app/manage.py",
+            "args": [
+                "test",
+                "${workspaceFolder}/webapp/perimeter_core/tests/crud/",
+                "--pattern='crud*.py'"
+            ],
+            "django": true
+        }
+    ]
+}

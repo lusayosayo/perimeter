@@ -1,0 +1,159 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+		{% if user %}
+		<div>
+			<h3>View User</h3>
+			<div class="form-group row">
+				<label for="username" class="col-sm-3 col-form-label">Username: </label>
+				<div class="col-sm-9">
+					<input type="text" name="username" class="form-control" disabled value="{{ user.username }}"/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="email" class="col-sm-3 col-form-label">Email: </label>
+				<div class="col-sm-9">
+					<input type="email" class="form-control" name="email" disabled value="{{ user.email }}" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="date_joined" class="col-sm-3 col-form-label">Date Joined: </label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" name="date_joined" disabled value="{{ user.date_joined }}" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="is_active" class="col-sm-3 col-form-label">Is Active: </label>
+				<div class="col-sm-9">
+					<input type="checkbox" class="custom" name="is_active"disabled {% if user.is_active %}checked{% endif %}/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="is_staff" class="col-sm-3 col-form-label">Is Staff: </label>
+				<div class="col-sm-9">
+					<input type="checkbox" class="custom-checkbox" name="is_staff" disabled {% if user.is_staff %}checked{% endif %} />
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="form-group row">
+				<header class="col-12">
+					<h3 class="perimeter-subsection-header">
+						<span>Contacts</span>
+						<span class="help">
+							<button type="button"
+								class="btn btn-link"
+								data-toggle='popover' title='What is this?'
+								data-container='body'
+								data-content="All of the contacts registered to this user are shown here.">
+								<i class="fa fa-question-circle"></i>
+							</button>
+						</span>
+					</h3>
+				</header>
+				<hr>
+				<div class="col-12 form-row mx-0">
+					{% if contacts %}
+					<table id="contacts" class="table table-dark table-striped">
+						<thead>
+							<th scope="col">Contact</th>
+							<th scope="col">Description</th>
+							<th scope="col"></th>
+							<th scope="col"></th>
+						</thead>
+						{% for contact in contacts %}
+						<tr class="contact">
+							<td class="interface_type">
+								{{ contact.name }}
+							</td>
+							<td class="interface_address">
+								{{ contact.description }}
+							</td>
+							<td class="interface_details">
+								<button
+									id="btn_contact_details+{{ contact.id }}"
+									type="button"
+									data-action="show"
+									data-module="contacts"
+									data-instance-id="{{ contact.id }}"
+									class="interface-details-btn btn btn-link text-white">
+									<i class="fa fa-external-link"></i>
+									<span>Details</span>
+								</button>
+							</td>
+							<td>
+								<button
+									id="btn_unmap_contact_{{ contact.id }}"
+									type="button"
+									data-action="unmap"
+									data-parent-module="accounts"
+									data-child-module="contacts"
+									data-parent-instance-id="{{ user.id }}"
+									data-child-instance-id="{{ contact.id }}"
+									data-map-keyword="Re-User"
+									data-unmap-keyword="Delete"
+									class="btn btn-link text-white">
+									<i class="fa fa-trash"></i>
+									<span class="mapping_state">Mapping State</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+					{% else %}
+					<div class="flex-center position-ref h-100 w-100">
+						<div class="code">
+							<h4 class="h1">No Contacts Found<h4>
+						</div>
+						<br>
+						<div class="message" style="padding: 10px;">
+							<span class="fa fa-terminal"></span>
+							<button type="button"
+								class="btn btn-link"
+								data-action="add_mapping"
+								data-parent-module="accounts"
+								data-parent-instance-id="{{ user.id }}"
+								data-child-module="contacts">
+								<i class="fa fa-plus-circle"></i>
+								<span>Add a new contact</span>
+							</button>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-12">
+					<button type="button"
+						data-action="edit"
+						data-module="accounts"
+						data-instance-id="{{ user.id}}"
+						class="btn btn-outline-dark mr-1">
+						<span class="fa fa-unlock"></span>
+						<span>&nbsp; Edit User</span>
+					</button>
+				</div>
+			</div>
+			{% csrf_token %}
+		</div>
+		{% else %}
+		<div class="flex-center position-ref full-height">
+            <div class="code">
+                <h1>
+                	The user you requested does not exist.
+                </h1>
+            </div>
+            <br>
+            <div class="message" style="padding: 10px;">
+            	<span class="fa fa-terminal"></span>
+                <a href="/perimeter/accounts/index">Return to user list...</a>
+            </div>
+        </div>
+		{% endif %}
+{% endblock %}

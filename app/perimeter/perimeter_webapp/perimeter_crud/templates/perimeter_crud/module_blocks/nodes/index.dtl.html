@@ -1,0 +1,39 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+	{% if nodes %}
+	<div>
+		<h3>Devices</h3>
+		<table class="table">
+			<thead class="thead-dark">
+				<th scope="col">ID</th>
+				<th scope="col">Name</th>
+				<th scrope="col">Description</th>
+			</thead>
+			<tbody>
+			{% for node in nodes %}
+				<tr class="modifiable_row" data-action="show" data-module="nodes" data-instance-id="{{ node.id }}">
+					<th scope="row">{{ node.id }}</th>
+					<td>{{ node.name }}</td>
+					<td>{{ node.description }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		
+	</div>
+	<!-- {% else %} -->
+		<div class="flex-center position-ref full-height">
+            <div class="code">
+                <h1>
+                	No nodes Found
+                </h1>
+            </div>
+            <br>
+            <div class="message" style="padding: 10px;">
+            	<span class="fa fa-terminal"></span>
+                <a href="/perimeter/nodes/create">Add a node</a> to get started.
+            </div>
+        </div>
+	<!-- {% endif %} -->
+{% endblock %}

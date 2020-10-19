@@ -1,0 +1,102 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+    {% if node %}
+		{% if node_interface %}
+		<div class="form-group row">
+			<header>
+				<h2 class="d-inline-block">
+					<button
+						class="btn btn-link btn-crumb"
+						data-action="show"
+						data-module="nodes"
+						data-instance-id="{{ node.id }}">{{ node.name }}</button>
+					<span>|</span>
+				</h2>
+				<h3 class="d-inline-block">
+					<button
+						class="btn btn-link btn-crumb"
+						data-action="show_child"
+						data-parent-module="nodes"
+						data-parent-instance-id="{{ node.id }}"
+						data-child-module="node_interfaces"
+						data-child-instance-id="{{ node_interface.id }}">{{ node_interface.interface_name }}</button>
+				</h3>
+			</header>
+		</div>
+		<hr>
+		<form action="/perimeter/nodes/{{ node.id }}/node_interfaces/{{ node_interface.id }}/ip_addresses/add" method="POST">
+			<h3>Add IP Address</h3>
+            <div class="form-group row">
+				<label for="ip_address_type" class="col-sm-3 col-form-label">IP Address Type: </label>
+				<div class="col-sm-9">
+					<select class="custom-select" name="ip_address_type">
+                        {% for ip_address_type in ip_address_types %}
+                        <option value="{{ ip_address_type }}">{{ ip_address_type }}</option>
+                        {% endfor %}
+                    </select>
+				</div>
+			</div>
+			
+            <div class="form-group row">
+				<label for="ip_address" class="col-sm-3 col-form-label">IP Address: </label>
+				<div class="col-sm-9">
+					<input type="text" name="ip_address" class="form-control" placeholder="127.0.0.1" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="ip_address" class="col-sm-3 col-form-label">Subnet Mask: </label>
+				<div class="col-sm-9">
+					<input type="text" name="subnet_mask" class="form-control" placeholder="255.255.255.0" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="ip_address" class="col-sm-3 col-form-label">Gateway: </label>
+				<div class="col-sm-9">
+					<input type="text" name="gateway" class="form-control" placeholder="192.168.0.1" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-12">
+					<button type="submit" class="btn btn-outline-dark mr-1">
+						<i class="fa fa-plus"></i>
+						<span>Add IP Address</span>
+					</button>
+				</div>
+			</div>
+
+			{% csrf_token %}
+			<input type="hidden" name="_method" value="POST"/>
+		</form>
+		{% else %}
+		<div class="flex-center position-ref full-height">
+			<div class="code">
+				<h3 class="h1">
+					You can't add an ip address to an interface that doesn't exist.
+				</h3>
+			</div>
+			<br>
+			<div class="message" style="padding: 10px;">
+				<span class="fa fa-terminal"></span>
+				<a href="/perimeter/nodes/{{ node.id }}/show">Return to node interface list...</a>
+			</div>
+		</div>
+		{% endif %}
+    {% else %}
+		<div class="flex-center position-ref full-height">
+			<div class="code">
+				<h3 class="h1">
+					You can't create an ip address for a node that doesn't exist.
+				</h3>
+			</div>
+			<br>
+			<div class="message" style="padding: 10px;">
+				<span class="fa fa-terminal"></span>
+				<a href="/perimeter/nodes/index">Return to node list...</a>
+			</div>
+		</div>
+    {% endif %}
+{% endblock %}

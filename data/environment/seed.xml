@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<network_provider
+    name="TNM"
+    description="TNM Malawi"
+    street_address="Ginnery corner.">
+	<contacts>
+		<contact
+			title="MR."
+			alias="T. Mkambeni"
+			first_name="Tonthozo"
+			last_name="Mkambeni"
+			middle_name="David"
+			job_post="Sales Representative.">
+			<phone_number>0997578523</phone_number>
+			<email>tmkambeni@tnm.co.mw</email>
+		</contact>
+	</contacts>
+	<networks>
+		<network
+			name="Device Network"
+			description="Network to monitor services on the perimeter host."
+			subnet_mask="255.255.255.0"
+			public_gateway="127.0.0.1"
+			local_gateway="127.0.0.1">
+		</network>
+	</networks>
+</network_provider>

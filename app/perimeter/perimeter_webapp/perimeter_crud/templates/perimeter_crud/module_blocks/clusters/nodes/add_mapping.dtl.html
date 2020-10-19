@@ -1,0 +1,210 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+		{% if cluster %}
+            <header>
+                <h3 class="d-inline">
+                    <span>{{ cluster.name }}</span>
+                    <span>|</span>
+                </h3>
+                <h4 class="d-inline">Add Mapping</h4>
+            </header>
+            
+			<hr>
+
+			<div class="form-group row">
+				<header class="col-12">
+					<h3 class="perimeter-subsection-header">
+						<span>Nodes</span>
+						<span class="help">
+							<button type="button"
+								class="btn btn-link"
+								data-toggle='popover' title='What is this?'
+								data-container='body'
+								data-content="Choose to add devices to this cluster.">
+								<i class="fa fa-question-circle"></i>
+							</button>
+						</span>
+					</h3>
+				</header>
+				<hr>
+				<div class="col-12 form-row mx-0">
+					{% if nodes %}
+					<table id="nodes" class="table table-dark table-striped">
+						<thead>
+							<th scope="col">Node</th>
+							<th scope="col">Description</th>
+							<th scope="col"></th>
+							<th scope="col"></th>
+						</thead>
+						{% for node in nodes %}
+						<tr class="node">
+							<td class="interface_type">
+								{{ node.name }}
+							</td>
+							<td class="interface_address">
+								{{ node.description }}
+							</td>
+							<td class="interface_details">
+								<button type="button"
+									data-action="show"
+									data-module="nodes"
+									data-instance-id="{{ node.id }}"
+									class="interface-details-btn btn btn-link text-white">
+									<i class="fa fa-external-link"></i>
+									<span>Details</span>
+								</button>
+							</td>
+							<td>
+								<button
+									id="btn_map_node_{{ node.id }}"
+									type="button"
+                                    {% if node in mapped_nodes %}
+									data-action="unmap"
+                                    {% else %}
+                                    data-action="map"
+                                    {% endif %}
+									data-parent-module="clusters"
+									data-child-module="nodes"
+									data-parent-instance-id="{{ cluster.id }}"
+									data-child-instance-id="{{ node.id }}"
+									data-map-keyword="Cluster"
+									data-unmap-keyword="Uncluster"
+									data-show-client-message="noshow"
+									class="btn btn-link text-white">
+									<i class="fa fa-object-group"></i>
+									<span class="mapping_state">Mapping State</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+					{% else %}
+					<div class="flex-center position-ref h-100 w-100">
+						<div class="code">
+							<h4 class="h1">No Nodes to map.<h4>
+						</div>
+						<br>
+						<div class="message" style="padding: 10px;">
+							<span class="fa fa-terminal"></span>
+							<button type="button"
+								class="btn btn-link"
+								data-action="add_mapping"
+								data-parent-module="clusters"
+								data-parent-instance-id="{{ cluster.id }}"
+								data-child-module="nodes">
+								<i class="fa fa-plus-circle"></i>
+								<span>Add a new node</span>
+							</button>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<header class="col-12">
+					<h3 class="perimeter-subsection-header">
+						<span>Devices in this cluster</span>
+						<span class="help">
+							<button type="button"
+								class="btn btn-link"
+								data-toggle='popover' title='What is this?'
+								data-container='body'
+								data-content="Choose to add devices to this cluster.">
+								<i class="fa fa-question-circle"></i>
+							</button>
+						</span>
+					</h3>
+				</header>
+
+				<hr>
+				
+				<div class="col-12 form-row mx-0">
+					{% if mapped_nodes %}
+					<table id="mapped_nodes" class="table table-dark table-striped">
+						<thead>
+							<th scope="col">Node</th>
+							<th scope="col">Description</th>
+							<th scope="col"></th>
+							<th scope="col"></th>
+						</thead>
+						{% for node in mapped_nodes %}
+						<tr class="node">
+							<td class="interface_type">
+								{{ node.name }}
+							</td>
+							<td class="interface_address">
+								{{ node.description }}
+							</td>
+							<td class="interface_details">
+								<button type="button"
+									data-action="show"
+									data-module="mapped_nodes"
+									data-instance-id="{{ node.id }}"
+									class="interface-details-btn btn btn-link text-white">
+									<i class="fa fa-external-link"></i>
+									<span>Details</span>
+								</button>
+							</td>
+							<td>
+								<button
+									id="btn_mapped_nodes_{{ node.id }}"
+									type="button"
+                                    {% if node in mapped_nodes %}
+									data-action="unmap"
+                                    {% else %}
+                                    data-action="map"
+                                    {% endif %}
+									data-parent-module="clusters"
+									data-child-module="nodes"
+									data-parent-instance-id="{{ cluster.id }}"
+									data-child-instance-id="{{ node.id }}"
+									data-map-keyword="Cluster"
+									data-unmap-keyword="Uncluster"
+									data-show-client-message="noshow"
+									class="btn btn-link text-white">
+									<i class="fa fa-object-group"></i>
+									<span class="mapping_state">Mapping State</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+					{% else %}
+					<div class="flex-center position-ref h-100 w-100">
+						<div class="code">
+							<h4 class="h1">No nodes found in this cluster.<h4>
+						</div>
+						<br>
+						<div class="message" style="padding: 10px;">
+							<span class="fa fa-terminal"></span>
+							<button type="button"
+								class="btn btn-link"
+								data-action="add_mapping"
+								data-parent-module="clusters"
+								data-parent-instance-id="{{ cluster.id }}"
+								data-child-module="nodes">
+								<i class="fa fa-plus-circle"></i>
+								<span>Add a new node</span>
+							</button>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+        {% else %}
+		<div class="flex-center position-ref full-height">
+            <div class="code">
+                <h1>
+                	The cluster you requested does not exist.
+                </h1>
+            </div>
+            <br>
+            <div class="message" style="padding: 10px;">
+            	<span class="fa fa-terminal"></span>
+                <a href="/perimeter/clusters/index">Return to cluster list...</a>
+            </div>
+        </div>
+		{% endif %}
+{% endblock %}

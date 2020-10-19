@@ -1,0 +1,237 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+		{% if ip_address and node and node_interface %}
+            <header>
+                <h4 class="d-inline">
+					<h2 class="d-inline-block">
+						<button
+							class="btn btn-link btn-crumb"
+							data-action="show"
+							data-module="nodes"
+							data-instance-id="{{ node.id }}">{{ node.name }}</button>
+						<span>|</span>
+					</h2>
+					<h3 class="d-inline-block">
+						<button
+							class="btn btn-link btn-crumb"
+							data-action="show_child"
+							data-parent-module="nodes"
+							data-parent-instance-id="{{ node.id }}"
+							data-child-module="node_interfaces"
+							data-child-instance-id="{{ node_interface.id }}">{{ node_interface.interface_name }}</button>
+						<span>|</span>
+					</h3>
+                    
+					<h4 class="d-inline-block">
+						<button
+								class="btn btn-link btn-crumb"
+								data-action="show_child"
+								data-parent-module="nodes/{{ node.id }}/node_interfaces"
+								data-parent-instance-id="{{ node_interface.id }}"
+								data-child-module="ip_addresses"
+								data-child-instance-id="{{ ip_address.id }}">{{ ip_address.ip_address }}</button>
+					</h4>
+                </h3>
+            </header>
+		
+			<hr>
+
+			<h2>Manage Service Mappings</h2>
+
+			<div class="form-group row">
+				<header class="col-12">
+					<h3 class="perimeter-subsection-header">
+						<span>Available Services</span>
+						<span class="help">
+							<button type="button"
+								class="btn btn-link"
+								data-toggle='popover' title='What is this?'
+								data-container='body'
+								data-content="Choose what services to bind to this IP address.">
+								<i class="fa fa-question-circle"></i>
+							</button>
+						</span>
+					</h3>
+				</header>
+				<hr>
+				<div class="col-12 form-row mx-0">
+					{% if services %}
+					<table id="services" class="table table-dark table-striped">
+						<thead>
+							<th scope="col">Service</th>
+							<th scope="col">Description</th>
+							<th scope="col"></th>
+							<th scope="col"></th>
+						</thead>
+						{% for service in services %}
+						<tr class="service">
+							<td class="interface_type">
+								{{ service.name }}
+							</td>
+							<td class="interface_address">
+								{{ service.description }}
+							</td>
+							<td class="interface_details">
+								<button type="button"
+									data-action="show"
+									data-module="services"
+									data-instance-id="{{ service.id }}"
+									class="interface-details-btn btn btn-link text-white">
+									<i class="fa fa-external-link"></i>
+									<span>Details</span>
+								</button>
+							</td>
+							<td>
+								<button
+									id="btn_map_service_{{ service.id }}"
+									type="button"
+                                    {% if service in mapped_services %}
+									data-action="unmap"
+                                    {% else %}
+                                    data-action="map"
+                                    {% endif %}
+									data-parent-module="nodes/{{ node.id }}/node_interfaces/{{ node_interface.id }}/ip_addresses"
+									data-child-module="services"
+									data-parent-instance-id="{{ ip_address.id }}"
+									data-child-instance-id="{{ service.id }}"
+									data-map-keyword="Bind Service"
+									data-unmap-keyword="Unbind Service"
+									data-show-client-message="noshow"
+									class="btn btn-link text-white">
+									<i class="fa fa-object-group"></i>
+									<span class="mapping_state">Mapping State</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+					{% else %}
+					<div class="flex-center position-ref h-100 w-100">
+						<div class="code">
+							<h4 class="h1">No services to map.<h4>
+						</div>
+						<br>
+						<div class="message" style="padding: 10px;">
+							<span class="fa fa-terminal"></span>
+							<button type="button"
+								class="btn btn-link"
+								data-action="add_mapping"
+								data-parent-module="ip_addresses"
+								data-parent-instance-id="{{ ip_address.id }}"
+								data-child-module="services">
+								<i class="fa fa-plus-circle"></i>
+								<span>Add a new service</span>
+							</button>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<header class="col-12">
+					<h3 class="perimeter-subsection-header">
+						<span>Services Bound to This IP Address</span>
+						<span class="help">
+							<button type="button"
+								class="btn btn-link"
+								data-toggle='popover' title='What is this?'
+								data-container='body'
+								data-content="Choose to add devices to this ip_address.">
+								<i class="fa fa-question-circle"></i>
+							</button>
+						</span>
+					</h3>
+				</header>
+
+				<hr>
+				
+				<div class="col-12 form-row mx-0">
+					{% if mapped_services %}
+					<table id="mapped_services" class="table table-dark table-striped">
+						<thead>
+							<th scope="col">Service</th>
+							<th scope="col">Description</th>
+							<th scope="col"></th>
+							<th scope="col"></th>
+						</thead>
+						{% for service in mapped_services %}
+						<tr class="service">
+							<td class="interface_type">
+								{{ service.name }}
+							</td>
+							<td class="interface_address">
+								{{ service.description }}
+							</td>
+							<td class="interface_details">
+								<button type="button"
+									data-action="show"
+									data-module="mapped_services"
+									data-instance-id="{{ service.id }}"
+									class="interface-details-btn btn btn-link text-white">
+									<i class="fa fa-external-link"></i>
+									<span>Details</span>
+								</button>
+							</td>
+							<td>
+								<button
+									id="btn_mapped_services_{{ service.id }}"
+									type="button"
+                                    {% if service in mapped_services %}
+									data-action="unmap"
+                                    {% else %}
+                                    data-action="map"
+                                    {% endif %}
+									data-parent-module="nodes/{{ node.id }}/node_interfaces/{{ node_interface.id }}/ip_addresses"
+									data-child-module="services"
+									data-parent-instance-id="{{ ip_address.id }}"
+									data-child-instance-id="{{ service.id }}"
+									data-map-keyword="Bind Service"
+									data-unmap-keyword="Unbind Service"
+									data-show-client-message="noshow"
+									class="btn btn-link text-white">
+									<i class="fa fa-object-group"></i>
+									<span class="mapping_state">Mapping State</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+					{% else %}
+					<div class="flex-center position-ref h-100 w-100">
+						<div class="code">
+							<h4 class="h1">No services found bound to this IP address.<h4>
+						</div>
+						<br>
+						<div class="message" style="padding: 10px;">
+							<span class="fa fa-terminal"></span>
+							<button type="button"
+								class="btn btn-link"
+								data-action="add_mapping"
+								data-parent-module="ip_addresses"
+								data-parent-instance-id="{{ ip_address.id }}"
+								data-child-module="services">
+								<i class="fa fa-plus-circle"></i>
+								<span>Add a new service</span>
+							</button>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+        {% else %}
+		<div class="flex-center position-ref full-height">
+            <div class="code">
+                <h1>
+                	The IP address binding you requested does not exist.
+                </h1>
+            </div>
+            <br>
+            <div class="message" style="padding: 10px;">
+            	<span class="fa fa-terminal"></span>
+                <a href="/perimeter/nodes/{{ node.id }}/node_interfaces/{{ node_interface.id }}/ip_addresses/{{ ip_address.id }}/show">Return to IP Address details...</a>
+            </div>
+        </div>
+		{% endif %}
+{% endblock %}

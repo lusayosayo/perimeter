@@ -1,0 +1,50 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+	{% if users %}
+	<div>
+		<h3>User Accounts</h3>
+		<table class="table">
+			<thead class="thead-dark">
+				<th scope="col">ID</th>
+				<th scope="col">Username</th>
+				<th scope="col">Email</th>
+				<th scope="col">Date Joined</th>
+				<th scope="col">Is Active</th>
+				<th scope="col">Is Staff</th>
+			</thead>
+			<tbody>
+			{% for user in users %}
+				<tr class="modifiable_row" data-action="show" data-module="accounts" data-instance-id="{{ user.id }}">
+					<th scope="row">{{ user.id }}</th>
+					<td>{{ user.username }}</td>
+					<td>{{ user.email }}</td>
+					<td>{{ user.date_joined }}</td>
+					<td>{{ user.is_active }}</td>
+					<td>{{ user.is_staff }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		
+	</div>
+	{% else %}
+	<div class="flex-center position-ref full-height">
+		<div class="code">
+			<h1>
+				No User Accounts Found
+			</h1>
+		</div>
+		<br>
+		<div class="message" style="padding: 10px;">
+			<span class="fa fa-terminal"></span>
+			<a href="/perimeter/accounts/create">Add a User Account</a> to get started.
+		</div>
+	</div>
+	{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

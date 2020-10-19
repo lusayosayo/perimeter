@@ -1,0 +1,163 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+		{%if node %}
+		<form action="/perimeter/nodes/{{ node.id }}/edit" class="locked" method="POST" id="edit_form">
+
+			<h3>Edit Device</h3>
+			
+			<hr>
+
+			<div class="form-group row">
+				<label for="node_name" class="col-sm-3 col-form-label">Device Name: </label>
+				<div class="col-sm-9">
+					<input type="text" name="node_name" class="form-control required" required placeholder="Victoria Avenue VBS Device" value="{{ node.name }}"/>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="node_description" class="col-sm-3 col-form-label">Device Description: </label>
+				<div class="col-sm-9">
+					<textarea name="node_description" class="form-control required" required placeholder="Device description...">{{ node.description }}</textarea>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="form-group row">
+				<div class="col col-sm-12">
+					<button onclick="submitChanges()" id="save_changes" class="btn btn-outline-dark"><span class="fa fa-save"></span>
+					 Save Changes</button>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="form-group row">
+				<header class="col-12">
+					<h3 class="perimeter-subsection-header">
+						<span>Interfaces</span>
+						<span class="help">
+							<button type="button"
+								class="btn btn-link"
+								data-toggle='popover' title='What is this?'
+								data-container='body'
+								data-content="Add your device's ethernet or wifi cards here. By default, perimeter assumes an ethernet card is available on your device, but you can remove it, or change its type by clicking on the interface details.">
+								<i class="fa fa-question-circle"></i>
+							</button>
+						</span>
+					</h3>
+				</header>
+				<hr>
+				<div class="col-12 form-row mx-0">
+					{% if node_interfaces %}
+					<table id="node_interfaces" class="table table-dark table-striped">
+						<thead>
+							<th scope="col">Interface Type</th>
+							<th scope="col">MAC Address</th>
+							<th scope="col"></th>
+							<th scope="col" class="d-flex">
+								<button type="button"
+									class="btn btn-outline-dark bg-white ml-auto"
+									data-action="add_child"
+									data-parent-module="nodes"
+									data-child-module="node_interfaces"
+									data-parent-instance-id="{{ node.id }}">
+									<i class="fa fa-plus-circle"></i>
+									<span>Add Interface</span>
+								</button>
+							</th>
+						</thead>
+						{% for node_interface in node_interfaces %}
+						<tr class="node_interface">
+							<td class="interface_type">
+								{{ node_interface.interface_type }}
+							</td>
+							<td class="interface_address">
+								{{ node_interface.mac_address }}
+							</td>
+							<td class="interface_details">
+								<button type="button"
+									data-action="show_child"
+									data-parent-module="nodes"
+									data-child-module="node_interfaces"
+									data-parent-instance-id="{{ node.id }}"
+									data-child-instance-id="{{ node_interface.id }}"
+									class="interface-details-btn btn btn-link text-white">
+									<i class="fa fa-external-link"></i>
+									<span>Details</span>
+								</button>
+							</td>
+							<td>
+								<button type="button"
+									data-action="remove_child"
+									data-parent-module="nodes"
+									data-child-module="node_interfaces"
+									data-parent-instance-id="{{ node.id }}"
+									data-child-instance-id="{{ node_interface.id }}"
+									class="btn btn-link text-white">
+									<i class="fa fa-trash"></i>
+									<span>Delete</span>
+								</button>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+
+					<!--<div class="perimeter-subsection-controls col-12">
+						<span class="d-block my-2">
+							
+						</span>
+					</div>-->
+
+					{% else %}
+					<div class="flex-center position-ref h-100 w-100">
+						<div class="code">
+							<h4 class="h1">No Interfaces Found<h4>
+						</div>
+						<br>
+						<div class="message" style="padding: 10px;">
+							<span class="fa fa-terminal"></span>
+							<button type="button"
+								class="btn btn-link"
+								data-action="add_child"
+								data-parent-module="nodes"
+								data-parent-instance-id="{{ node.id }}"
+								data-child-module="node_interfaces">
+								<i class="fa fa-plus-circle"></i>
+								<span>Add a new interface</span>
+							</button>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+			
+			{% csrf_token %}
+			<input type="hidden" name="_method" value="PUT"/>
+		</form>
+		{% else %}
+		<div class="flex-center position-ref full-height">
+            <div class="code">
+                <h1>
+                	The node you requested does not exist.
+                </h1>
+            </div>
+            <br>
+            <div class="message" style="padding: 10px;">
+            	<span class="fa fa-terminal"></span>
+                <a href="/perimeter/nodes/index">Return to node list...</a>
+            </div>
+        </div>
+		{% endif %}
+{% endblock %}
+
+{% block scripts %}
+	<script>
+		function submitChanges() {
+			if (confirm("Are you sure you want to save these changes?")) {
+				document.getElementById("edit_form").submit();
+			}
+		}
+	</script>
+{% endblock %}

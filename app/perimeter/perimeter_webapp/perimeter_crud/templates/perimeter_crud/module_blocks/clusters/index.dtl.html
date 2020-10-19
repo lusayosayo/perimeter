@@ -1,0 +1,39 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+	<!-- {% if clusters %} -->
+	<div>
+		<h3>Clusters</h3>
+		<table class="table">
+			<thead class="thead-dark">
+				<th scope="col">ID</th>
+				<th scope="col">Cluster Name</th>
+				<th scrope="col">Cluster Description</th>
+			</thead>
+			<tbody>
+			{% for cluster in clusters %}
+				<tr class="modifiable_row" data-action="show" data-module="clusters" data-instance-id="{{ cluster.id }}">
+					<th scope="row">{{ cluster.id }}</th>
+					<td>{{ cluster.name }}</td>
+					<td>{{ cluster.description }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		
+	</div>
+	<!-- {% else %} -->
+		<div class="flex-center position-ref full-height">
+            <div class="code">
+                <h1>
+                	No Clusters Found
+                </h1>
+            </div>
+            <br>
+            <div class="message" style="padding: 10px;">
+            	<span class="fa fa-terminal"></span>
+                <a href="/perimeter/clusters/create">Add a Cluster</a> to get started.
+            </div>
+        </div>
+	<!-- {% endif %} -->
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "perimeter_dashboard/layout_blocks/app.dtl.html" %}
+
+{% block nav_control_content %}
+	{% if nodes %}
+		<div>
+			<h3>Devices</h3>
+
+				<div class="controls">
+					<input type="text" placeholder="search" id="search_input" onkeyup="evaluateFilters()" class="mx-auto form-control"/>
+					<div class="form-group d-flex">
+						<div class="flex-fill p-0 pr-1">
+							<select onchange="evaluateFilters()" class="custom-select custom-select-sm custom-control-inline mt-2" id="connectivity_status_select">
+  								<option selected value="All">Status (All)</option>
+  								<option value="online">Online</option>
+								<option value="offline">Offline</option>
+								<option value="probing">Probing</option>
+							</select>
+						</div>
+						<div class="flex-fill p-0 px-1">
+							<select onchange="evaluateFilters()" class="custom-select custom-select-sm custom-control-inline mt-2" id="network_provider_select">
+  								<option selected value="all">Network Provider (All)</option>
+  								{% for network_provider in network_providers %}
+  								<option value='{{ network_provider.id }}'>{{ network_provider.name }}</option>
+  								{% endfor %}
+							</select>
+						</div>
+						<div class="flex-fill p-0 pl-1">
+							<select onchange="evaluateFilters()" id="cluster_select" class="custom-select custom-select-sm custom-control-inline mt-2">
+  								<option selected value="All">Clusters (All)</option>
+  								{% for cluster in clusters %}
+  								<option value="{{ cluster.id }}">{{ cluster.name}}</option>
+  								{% endfor %}
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div id="nodes_list" class="jumbotron row mx-0 p-1">
+					{% for node in nodes %}
+						<div class="col-12 col-md-4 mb-2 px-1 p-0 node_wrapper" id="node_{{ node.id }}">
+							{% comment ""%}
+							<span class="sr-only filterable">network_provider_id={{ node.network_provider_id }};cluster_id={{ node.cluster_id }};connectivity_status=loading</span>
+							{% endcomment %}
+							<div class="mx-2 pb-2 bg-dark text-white">
+								<div class="node_wrapper_options">
+									<div class="btn-group dropright">
+										<button type="button" class="btn btn-outline-light bg-dark options-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span></span>
+											<span></span>
+											<span></span>
+										</button>
+										<div class="dropdown-menu">
+										<!-- Dropdown menu links -->
+											<button class="dropdown-item" data-action="show" data-instance-id="{{ node.id }}" data-module="nodes"><span class="fa fa-desktop"></span>&nbsp; Details</button>
+											<button class="dropdown-item" data-action="delete" data-instance-id="{{ node.id }}" data-module="nodes"><span class="fa fa-trash"></span>&nbsp; Delete Device</button>
+											<div class="dropdown-divider"></div>
+										</div>
+									</div>
+								</div>
+								<div class="node_wrapper_main text-center">
+									<h3 class="node_name d-block my-2">{{ node.name }}</h3>
+									<button type="button" class="connection_status btn btn-link text-white status_loading" id="connection_status_node_{{ node.id }}">
+										<span class="connection_status_spinner spinner-border" role="status" aria-hidden=	"true"></span>
+										<span class="connection_status_description d-block my-2"> Probing...
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+	{% else %}
+		<div class="flex-center position-ref full-height">
+            <div class="code">
+                <h1>
+                	No Devices Found
+                </h1>
+            </div>
+            <br>
+            <div class="message" style="padding: 10px;">
+            	<span class="fa fa-terminal"></span>
+                <a href="/perimeter/nodes/create">Add a new node</a> to get started.
+            </div>
+        </div>
+	{% endif %}
+
+	<div id="hidden">
+	</div>
+{% endblock %}
+
+{% block scripts %}
+	{% if nodes %}
+	<script>
+		probe_all_nodes();
+	</script>
+	{% endif %}
+{% endblock %}

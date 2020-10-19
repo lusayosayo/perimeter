@@ -1,0 +1,164 @@
+{% extends "perimeter_crud/layout_blocks/app.dtl.html" %}
+
+{% block content %}
+	<ul class="nav sidenav bg-dark d-flex align-content-start">
+		<li class="menu-item">
+			<button data-target="#dashboard_modules" data-toggle="collapse" class="sidenav-link btn bg-dark">
+				<span class="fa fa-line-chart"></span>
+				<span> Dashboard</span>
+			</button>
+			<ul id="dashboard_modules" class="collapse sidenav-section">
+				<a class="sidenav-link btn bg-dark" href="/perimeter/dashboard/nodes">
+					<span class="fa fa-linux"></span>
+					<span>Overview</span>
+				</a>
+				<a class="sidenav-link btn bg-dark" href="/perimeter/dashboard/nodes">
+					<span class="fa fa-laptop"></span>
+					<span>Devices</span>
+				</a>
+				<a class="sidenav-link btn bg-dark" href="/perimeter/dashboard/nodes">
+					<span class="fa fa-laptop"></span>
+					<span>Networks</span>
+				</a>
+				<a class="sidenav-link btn bg-dark" href="/perimeter/dashboard/nodes">
+					<span class="fa fa-laptop"></span>
+					<span>Clusters</span>
+				</a>
+			</ul>
+		</li>
+		<li class="menu-item ">
+			<button data-target="#infrastructure_modules" data-toggle="collapse" class="sidenav-link btn bg-dark">
+				<i class="fa fa-laptop"></i>
+				<span>Infrastructure</span>
+			</button>
+			<ul id="infrastructure_modules"class="collapse sidenav-section">
+				<li class="menu-item">
+					<button data-target="#node_module" data-toggle="collapse" class="sidenav-link btn bg-dark">
+						<i class="fa fa-lg fa-laptop"></i>
+						<span>Devices</span>
+					</button>
+					<ul id="node_module" class="collapse sidenav-section">
+						<a class="sidenav-link btn bg-dark" href="/perimeter/nodes/">
+							<i class="fa fa-list-alt"></i>
+							<span>All Devices</span>
+						</a>
+						<a class="sidenav-link btn bg-dark" href="/perimeter/nodes/create">
+							<i class="fa fa-plus"></i>
+							<span>Add Device</span>
+						</a>
+					</ul>
+				</li>
+				<li class="menu-item">
+					<button data-target='#cluster_module' data-toggle='collapse' class="sidenav-link btn bg-dark">
+						<i class="fa fa-object-group"></i>
+						<span>Clusters</span>
+					</button>
+					<ul id="cluster_module" class="collapse sidenav-section">
+						<a class="sidenav-link btn bg-dark" href="/perimeter/clusters">
+							<i class="fa fa-list-alt"></i>
+							<span>Clusters</span>
+						</a>
+						<a class="sidenav-link btn bg-dark" href="/perimeter/clusters/create">
+							<i class="fa fa-plus"></i>
+							<span>Create Cluster</span>
+						</a>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li class="menu-item ">
+			<button data-target="#environment_modules" data-toggle="collapse" class="sidenav-link btn bg-dark">
+				<i class="fa fa-globe"></i>
+				<span>Environment</span>
+			</button>
+			<ul id="environment_modules" class="collapse sidenav-section">
+				<li class="menu-item">
+					<button data-target="#network_provider_module" data-toggle="collapse" class="sidenav-link btn bg-dark">
+						<i class="fa fa-lg fa-wifi"></i>
+						<span>Network Providers</span>
+					</button>
+					<ul id="network_provider_module" class="collapse sidenav-section">
+						<a class="sidenav-link btn bg-dark" href="/perimeter/network_providers/">
+							<i class="fa fa-list-alt"></i>
+							<span>All Network Providers</span>
+						</a>
+						<a class="sidenav-link btn bg-dark" href="/perimeter/network_providers/create">
+							<i class="fa fa-plus"></i>
+							<span>Add Network Provider</span>
+						</a>
+					</ul>
+				</li>
+				<li class="menu-item ">
+					<button data-target="#contact_module" data-toggle="collapse" class="sidenav-link btn bg-dark">
+						<i class="fa fa-lg fa-address-book"></i>
+						<span>Contacts</span>
+					</button>
+		
+					<ul id="contact_module" class="collapse sidenav-section">
+						<a class="sidenav-link btn bg-dark" href="/perimeter/contacts/">
+							<i class="fa fa-list-alt"></i>
+							<span>All Contacts</span>
+						</a>
+						<a class="sidenav-link btn bg-dark" href="/perimeter/contacts/create">
+							<i class="fa fa-plus"></i>
+							<span>Add Contact</span>
+						</a>
+						<a class="sidenav-link btn bg-dark" href="/perimeter/contacts/notifications">
+							<i class="fa fa-bell"></i>
+							<span>Notifications</span>
+						</a>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li class="menu-item">
+			<button data-target="#users_and_groups_modules" data-toggle="collapse" class="sidenav-link btn bg-dark">
+				<i class="fa fa-male"></i>
+				<span>Users and Groups</span>
+			</button>
+			<ul id="users_and_groups_modules" class="collapse sidenav-section">
+				<li class="menu-item">
+					<button data-target="#user_module" data-toggle="collapse" class="sidenav-link btn bg-dark">
+						<i class="fa fa-female"></i>
+						<span>Users</span>
+					</button>
+					<ul id="user_module" class="collapse sidenav-section">
+						<a class="sidenav-link btn bg-dark" href="/perimeter/accounts/list">
+							<i class="fa fa-list-alt"></i>
+							<span>All Users</span>
+						</a>
+						<a class="sidenav-link btn bg-dark" href="/perimeter/accounts/pending_approval">
+							<i class="fa fa-plus"></i>
+							<span>Approve Users</span>
+						</a>
+					</ul>
+				</li>
+				<li class="menu-item">
+					<button data-target="#user_group_module" data-toggle="collapse" class="sidenav-link btn bg-dark">
+						<i class="fa fa-group"></i>
+						<span>User Groups</span>
+					</button>
+					<ul id="user_group_module" class="collapse sidenav-section">
+						<a class="sidenav-link btn bg-dark" href="/perimeter/user_groups/">
+							<i class="fa fa-list-alt"></i>
+							<span>All User Groups</span>
+						</a>
+						<a class="sidenav-link btn bg-dark" href="/perimeter/user_groups/create">
+							<i class="fa fa-plus"></i>
+							<span>Add User Group</span>
+						</a>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li class="menu-item">
+			<button href="/perimeter/logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="sidenav-link btn bg-dark"><span class="fa fa-sign-out"></span> Logout</button>
+		</li>
+	</ul>
+	<div class="main-content pt-2 col-9">
+		{% block module_content %}
+		{% endblock %}
+	</div>
+{% endblock %}

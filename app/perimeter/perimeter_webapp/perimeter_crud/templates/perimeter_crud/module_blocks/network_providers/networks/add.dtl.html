@@ -1,0 +1,83 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+        {% if network_provider %}
+		<header class="text-center w-100">
+            <h2 class="d-inline-block">
+				<button
+					class="btn btn-link btn-crumb"
+					data-action="show"
+					data-module="network_providers"
+					data-instance-id="{{ network_provider.id }}">{{ network_provider.name }}</button>
+                <span>|</span>
+            </h2>
+            <h3 class="d-inline-block">Add Network</h3>
+        </header>
+		<hr>
+		<form action="/perimeter/network_providers/{{ network_provider.id }}/networks/add" method="POST">
+			<div class="form-group row">
+				<label for="name" class="col-sm-3 col-form-label">Network Name: </label>
+				<div class="col-sm-9">
+					<input type="text" name="name" class="form-control"
+						required placeholder="Victoria Avenue Network"/>
+				</div>
+			</div>
+
+            <div class="form-group row">
+				<label for="description" class="col-sm-3 col-form-label">Description: </label>
+				<div class="col-sm-9">
+					<textarea name="description" class="form-control"
+						required placeholder="Victoria Avenue VPN connection."></textarea>
+				</div>
+			</div>
+
+            <div class="form-group row">
+				<label for="public_gateway" class="col-sm-3 col-form-label">Public Gateway: </label>
+				<div class="col-sm-9">
+					<input type="text" name="public_gateway" class="form-control"
+						required placeholder="196.216.9.204"/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="local_gateway" class="col-sm-3 col-form-label">Local Gateway: </label>
+				<div class="col-sm-9">
+					<input type="text" name="local_gateway" class="form-control"
+						required placeholder="172.25.0.1"/>
+				</div>
+			</div>
+
+            <div class="form-group row">
+				<label for="network_subnet_mask" class="col-sm-3 col-form-label">Subnet Mask: </label>
+				<div class="col-sm-9">
+					<input type="text" name="subnet_mask" class="form-control"
+						required placeholder="255.255.255.0"/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-12">
+					<button type="submit" class="btn btn-outline-dark mr-1">
+						<i class="fa fa-plus"></i>
+						<span>Add Network</span>
+					</button>
+				</div>
+			</div>
+			{% csrf_token %}
+			<input type="hidden" name="_method" value="POST"/>
+		</form>
+        {% else %}
+            <div class="flex-center position-ref full-height">
+                <div class="code">
+                    <h3 class="h1">
+                        You can't create an interface for a network_provider that doesn't exist.
+                    </h3>
+                </div>
+                <br>
+                <div class="message" style="padding: 10px;">
+                    <span class="fa fa-terminal"></span>
+                    <a href="/perimeter/network_providers/index">Return to network_provider list...</a>
+                </div>
+            </div>
+        {% endif %}
+{% endblock %}

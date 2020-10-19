@@ -1,0 +1,303 @@
+{% extends "perimeter_crud/layout_blocks/administration_interface/create_update.dtl.html" %}
+
+{% block create_update_content %}
+		{% if network_provider %}
+		<form action="/perimeter/network_providers/{{ network_provider.id }}/edit" method="POST">
+			<div class="form-group row">
+				<label for="network_provider_name" class="col-sm-3 col-form-label">Company Name: </label>
+				<div class="col-sm-9">
+					<input type="text" name="network_provider_name" class="form-control" required placeholder="TNM" value="{{ network_provider.name }}"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="network_provider_street_address" class="col-sm-3 col-form-label">Street Address: </label>
+				<div class="col-sm-9">
+					<input type="text" name="network_provider_street_address" class="form-control" required placeholder="Ali Hassan Road, Lot 18, Ginnery Corner, Chichiri, Blantyre, Malawi" value="{{ network_provider.street_address }}"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="network_provider_description" class="col-sm-3 col-form-label">Description: </label>
+				<div class="col-sm-9">
+					<textarea name="network_provider_description" class="form-control" required placeholder="Telecommunications Network Malawi">{{ network_provider.description }}</textarea>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="form-group row">
+				<div class="col-sm-12">
+					<button
+						type="submit"
+						class="btn btn-outline-dark">
+						<i class="fa fa-save"></i>
+						<span>Save Changes</span>
+					</button>
+				</div>
+			</div>
+
+			<hr>
+			<div class="form-group row">
+				<ul class="nav nav-tabs col-12">
+					<li class="nav-item">
+						<a class="nav-link active" data-toggle="tab" href="#network_provider_networks">
+							<i classs="fa fa-wifi"></i>
+							<span>Networks</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#network_provider_contacts">
+							<i class="fa fa-mail"></i>
+							<span>Contacts</span>
+						</a>
+					</li>
+				</ul>
+
+				<div class="tab-content col-12" id="contact_details">
+					<div class="tab-pane fade show active" id="network_provider_networks">
+						<div class="form-group row">
+							<header class="col-12">
+								<h3 class="perimeter-subsection-header">
+									<span>Networks</span>
+									<span class="help">
+										<button type="button"
+											class="btn btn-link"
+											data-toggle='popover' title='What is this?'
+											data-container='body'
+											data-content="Here are listed the networks under your network provider. You can manage notifications and other settings here.">
+											<i class="fa fa-question-circle"></i>
+										</button>
+									</span>
+								</h3>
+							</header>
+							<hr>
+							<div class="col-12 form-row mx-0">
+								{% if networks %}
+								<table id="networks" class="table table-dark table-striped">
+									<thead>
+										<th scope="col">Network Name</th>
+										<th scope="col">Public Gateway</th>
+										<th scope="col">Local Gateway</th>
+										<th scope="col">Subnet Mask</th>
+										<th scope="col"></th>
+										<th scope="col" class="d-flex">
+											<button
+												type="button"
+												class="btn btn-outline-dark bg-white ml-auto"
+												data-action="add_child"
+												data-parent-module="network_providers"
+												data-child-module="networks"
+												data-parent-instance-id="{{ network_provider.id }}">
+												<i class="fa fa-plus"></i>
+												<span>Add Network</span>
+											</button>
+										</th>
+									</thead>
+									{% for network in networks %}
+									<tr class="network">
+										<td class="network">
+											{{ network.name }}
+										</td>
+										<td class="public_gateway">
+											{{ network.public_gateway}}
+										</td>
+										<td class="local_gateway">
+											{{ network.local_gateway}}
+										</td>
+										<td class="subnet_mask">
+											{{ network.subnet_mask }}
+										</td>
+										<td class="show_network">
+											<button type="button"
+												data-action="show_child"
+												data-parent-module="network_providers"
+												data-child-module="networks"
+												data-parent-instance-id="{{ network_provider.id }}"
+												data-child-instance-id="{{ network.id }}"
+												class="btn btn-link text-white">
+												<i class="fa fa-external-link"></i>
+												<span>Details</span>
+											</button>
+										</td>
+										<td class="delete_network">
+											<button type="button"
+												data-action="remove_child"
+												data-parent-module="network_providers"
+												data-child-module="networks"
+												data-parent-instance-id="{{ network_provider.id }}"
+												data-child-instance-id="{{ network.id }}"
+												class="btn btn-link text-white">
+												<i class="fa fa-trash"></i>
+												<span>Delete</span>
+											</button>
+										</td>
+									</tr>
+									{% endfor %}
+								</table>
+								{% else %}
+								<div class="flex-center position-ref h-100 w-100">
+									<div class="code">
+										<h4 class="h1">No Networks Found<h4>
+									</div>
+									<br>
+									<div class="message" style="padding: 10px;">
+										<span class="fa fa-terminal"></span>
+										<button
+											data-action="add_child"
+											data-parent-module="network_providers"
+											data-child-module="networks"
+											data-parent-instance-id="{{ network_provider.id }}"
+											type="button"
+											class="add-interface-btn btn btn-link">
+											<i class="fa fa-plus-circle"></i>
+											<span>Add a new network</span>
+										</button>
+									</div>
+								</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="network_provider_contacts">
+						<div class="form-group">
+							<header class="col-12">
+								<h3 class="perimeter-subsection-header">
+									<span>Contacts</span>
+									<span class="help">
+										<button type="button"
+											class="btn btn-link"
+											data-toggle='popover' title='What is this?'
+											data-container='body'
+											data-content="Here are listed the contacts associated with this network provider. You can use this to provide easy notifications and communication.">
+											<i class="fa fa-question-circle"></i>
+										</button>
+									</span>
+								</h3>
+							</header>
+							
+							<hr>
+
+							<div class="col-12 form-row mx-0">
+								{% if contacts %}
+								<table id="node_contacts" class="table table-dark table-striped">
+									<thead class="thead-dark">
+										<th scope="col">ID</th>
+										<th scope="col">Alias</th>
+										<th scope="col">Title</th>
+										<th scope="col">First Name</th>
+										<th scope="col">Last Name</th>
+										<th scope="col"></th>
+										<th scope="col" class="d-flex">
+											<button
+												type="button"
+												class="btn btn-outline-dark bg-white ml-auto"
+												data-action="add_mapping"
+												data-parent-module="network_providers"
+												data-child-module="contacts"
+												data-parent-instance-id="{{ network_provider.id }}">
+												<i class="fa fa-plus"></i>
+												<span>Add Contact</span>
+											</button>
+										</th>
+									</thead>
+									<tbody>
+									{% for contact in contacts %}
+										<tr>
+											<th scope="row">{{ contact.id }}</th>
+											<td>{{ contact.alias }}</td>
+											<td>{{ contact.title }}</td>
+											<td>{{ contact.first_name }}</td>
+											<td>{{ contact.last_name }}</td>
+											<td>
+												<button
+													type="button"
+													data-action="show"
+													data-module="contacts"
+													data-instance-id="{{ contact.id }}"
+													class="btn btn-link text-white">
+													<i class="fa fa-external-link"></i>
+													<span class="mapping_status">Details</span>
+												</button>
+											</td>
+											<td>
+												<button
+													type="button"
+													data-action="unmap"
+													data-map-keyword="Bind Contact"
+													data-unmap-keyword="Dissasociate Contact"
+													data-parent-module="network_providers"
+													data-child-module="contacts"
+													data-parent-instance-id="{{ network_provider.id }}"
+													data-child-instance-id="{{ contact.id }}"
+													class="btn btn-link text-white">
+													<i class="fa fa-trash"></i>
+													<span class="mapping_status">Unbind Contact</span>
+												</button>
+											</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+								{% else %}
+								<div class="flex-center position-ref h-100 w-100">
+									<div class="code">
+										<h4 class="h1">No Contacts Found<h4>
+									</div>
+									<br>
+									<div class="message" style="padding: 10px;">
+										<span class="fa fa-terminal"></span>							
+										<button
+											type="button"
+											class="btn btn-outline-dark bg-white ml-auto"
+											data-action="add_mapping"
+											data-parent-module="network_providers"
+											data-child-module="contacts"
+											data-parent-instance-id="{{ network_provider.id }}">
+											<i class="fa fa-plus-circle"></i>
+											<span>Fetch from address book</span>
+										</button>
+										<span> - OR - </span>		
+										<button
+											type="button"
+											class="add-contact-btn btn btn-link"
+											data-action="add"
+											data-module="contacts">	
+											<i class="fa fa-plus-circle"></i>
+											<span>Create new contact</span>
+										</button>
+									</div>
+								</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{% csrf_token %}
+			<input type="hidden" name="_method" value="PUT"/>
+		</form>
+		{% else %}
+		<div class="flex-center position-ref full-height">
+            <div class="code">
+                <h1>
+                	The network provider you requested does not exist.
+                </h1>
+            </div>
+            <br>
+            <div class="message" style="padding: 10px;">
+            	<span class="fa fa-terminal"></span>
+                <a href="/perimeter/network_providers/index">Return to list of network providers...</a>
+            </div>
+        </div>
+		{%endif%}
+{% endblock %}
+
+{% block scripts %}
+	<script>
+		function submitChanges() {
+			if (confirm("Are you sure you want to save these changes?")) {
+				document.getElementById("edit_form").submit();
+			}
+		}
+	</script>
+{% endblock %}
