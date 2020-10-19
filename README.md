@@ -47,10 +47,16 @@ for development.
   + Create a database:
     + The default database engine is mysql.
     + The default configuration is:
-      + Database name: perimeter
-      + User: perimeter
-      + Password: perimeter
-      + Host: localhost
+  
+      > Database name: perimeter
+      
+      > User: perimeter
+      
+      > Password: perimeter
+
+      > Host: localhost
+    
+      > Port: 3306
     
     + You can change the database configuration in:
       + app/config/settings.py
@@ -75,5 +81,5 @@ for development.
     
           python3 manage.py runserver
 
-  + Navigate to your browser and run: http://localhost:8000/perimeter/accounts/login.
+  + Navigate to your browser and run: http://localhost:8000/perimeter/accounts/login and login with the credentials you specified.
 
