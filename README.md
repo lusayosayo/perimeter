@@ -1,11 +1,14 @@
 Perimeter - Infrastructure Management Tool
 ==========================================
 
+> :warning: **This is sample documentation, so not everything here works.**
+
 Perimeter is a tool for managing multiple computers. You can use it to:
 
     + Manage multiple SSH clients.
     + Manage multiple Remote Desktop and VNC credentials.
     + Track IP address configurations, and service availability across an organization.
+    + Track contacts for network administrators and service managers.
 
 ## INSTALLATION:
   + Windows: https://www.fpoint.tech/products/downloads/perimeter.exe
@@ -49,12 +52,20 @@ for development.
       + Password: perimeter
       + Host: localhost
     
-    + You can change the database config app/config/settings.py
+    + You can change the database configuration in:
+      + app/config/settings.py
 
   + For the following steps, make sure you are in the 'app' directory:
+  
+        cd app
+
     + Run migrations:
 
           python3 manage.py migrate
+
+    + Create a super user:
+  
+          python3 manage.py createsuperuser
 
     + Load sample data (Optional but recommended)
 
@@ -64,5 +75,5 @@ for development.
     
           python3 manage.py runserver
 
-  + Navigate to your browser and run: http://localhost:8000.
+  + Navigate to your browser and run: http://localhost:8000/perimeter/accounts/login.
 
